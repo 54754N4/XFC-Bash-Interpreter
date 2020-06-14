@@ -52,6 +52,7 @@
 |    +---- Interpreter
 |    +---- AST
 +---- Including arrays as a valid variable type (parameter expansion)
++---- Seamless working directory handling
 +---- Android launcher
 |    +---- Giving commands access to android context pre-execution
 |    +---- Creating default set of custom android commands
@@ -59,5 +60,4 @@
 |         +---- File editor
 |         +---- Music player
 |         +---- Browser
-|    +---- Seamless working directory handling
 ```
