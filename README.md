@@ -3,7 +3,7 @@
 
 ## Input Handling
 
-### Completed:
+#### Completed:
 ```
 +---- Brace expansion
 |    +---- Comma separated sequence                   {a,b,z}
@@ -25,7 +25,7 @@
 |    +---- Display error if null or unset             ${param:?value}
 +---- Arithmetic expansion
 ```
-### Incomplete:
+#### Incomplete:
 ```
 +---- Tilde expansion
 +---- Pathname expansion
@@ -35,7 +35,7 @@
 
 ## Terminal
 
-### Complete:
+#### Complete:
 ```
 +---- Native commands
 +---- Custom commands
@@ -43,7 +43,7 @@
 +---- Native and custom command interoperability
 ```
 
-### Incomplete:
+#### Incomplete:
 ```
 +---- Bash 
 |    +---- Grammar
