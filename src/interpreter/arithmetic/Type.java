@@ -1,0 +1,69 @@
+package interpreter.arithmetic;
+
+public enum Type {
+	NUMBER("NUMBER"), PI("PI"), EOF("EOF"),
+	
+	LEFT_PARENTHESIS("("), RIGHT_PARENTHESIS(")"),
+	FLOOR_DIVIDE("//"), MODULUS("%"), POWER("**"),
+	PLUS("+"), MINUS("-"), MULTIPLY("*"), DIVIDE("/"),  
+	
+	AND("&"), OR("|"), XOR("^"), FLIP("~"), 
+	LEFT_SHIFT("<<"), RIGHT_SHIFT(">>"),
+	
+	ABS("ABS"), EXP("EXP"), LN("LN"), LOG("LOG"),
+	SQRT("SQRT"), CEIL("CEIL"), FLOOR("FLOOR"), ROUND("ROUND"),
+    
+	ARC_SECANT_HYPERBOLIC("ASECH"), ARC_COTANGENT_HYPERBOLIC("ACOTH"),
+	ARC_TAN_HYPERBOLIC("ATANH"), ARC_COSECANT_HYPERBOLIC("ACSCH"), 
+	ARC_COS_HYPERBOLIC("ACOSH"), ARC_SIN_HYPERBOLIC("ASINH"), 
+	COSECANT_HYPERBOLIC("CSCH"), SECANT_HYPERBOLIC("SECH"), COTANGENT_HYPERBOLIC("COTH"),
+	COS_HYPERBOLIC("COSH"), SIN_HYPERBOLIC("SINH"), TAN_HYPERBOLIC("TANH"),
+    ARC_COS("ACOS"), ARC_SIN("ASIN"), ARC_TAN("ATAN"), 
+	COS("COS"), SIN("SIN"), TAN("TAN");
+	
+	private String string;
+	
+	private Type(String string) {
+		this.string = string;
+	}
+	
+	public static Type[] getShiftOps() {
+		return new Type[] { LEFT_SHIFT, RIGHT_SHIFT };
+	}
+	
+	public static Type[] getArithOps() {
+		return new Type[] { PLUS, MINUS };
+	}
+	
+	public static Type[] getFactorOps() {
+		return new Type[] { MULTIPLY, DIVIDE, FLOOR_DIVIDE, MODULUS };
+	}
+	
+	public static Type[] getWords() {
+		return new Type[] {
+			PI,
+			ABS, CEIL, EXP, LN, LOG, FLOOR, ROUND, SQRT,
+			ARC_COSECANT_HYPERBOLIC, ARC_SECANT_HYPERBOLIC, ARC_COTANGENT_HYPERBOLIC,
+			ARC_COS_HYPERBOLIC, ARC_SIN_HYPERBOLIC, ARC_TAN_HYPERBOLIC,
+			COSECANT_HYPERBOLIC, SECANT_HYPERBOLIC, COTANGENT_HYPERBOLIC,
+			COS_HYPERBOLIC, SIN_HYPERBOLIC, TAN_HYPERBOLIC,
+            ARC_COS, ARC_SIN, ARC_TAN, COS, SIN, TAN, 
+		};
+	}
+	
+	public static Type[] getFunctions() {
+		return new Type[] {
+			ABS, CEIL, EXP, LN, LOG, FLOOR, ROUND, SQRT,
+			ARC_COSECANT_HYPERBOLIC, ARC_SECANT_HYPERBOLIC, ARC_COTANGENT_HYPERBOLIC,
+			ARC_COS_HYPERBOLIC, ARC_SIN_HYPERBOLIC, ARC_TAN_HYPERBOLIC,
+			COSECANT_HYPERBOLIC, SECANT_HYPERBOLIC, COTANGENT_HYPERBOLIC,
+			COS_HYPERBOLIC, SIN_HYPERBOLIC, TAN_HYPERBOLIC,
+            ARC_COS, ARC_SIN, ARC_TAN, COS, SIN, TAN,
+		};
+	}
+	
+	@Override
+	public String toString() {
+		return string;
+	}
+}
