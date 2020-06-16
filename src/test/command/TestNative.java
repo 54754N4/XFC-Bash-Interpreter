@@ -1,4 +1,4 @@
-package test;
+package test.command;
 
 import model.command.Executable;
 import model.command.NativeCommand;
