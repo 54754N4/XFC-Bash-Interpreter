@@ -9,14 +9,14 @@ import interpreter.exceptions.ParsingException;
 
 public class Interpreter implements Visitor {
 	public String input;
-	private Parser parser;
+	private ArithmeticParser parser;
 	
 	public Interpreter(String input)  {
 		this.input = input;
 	}
 	
 	public Double interpret() throws ParsingException {
-		parser = new Parser(new Lexer(input));
+		parser = new ArithmeticParser(new ArithmeticLexer(input));
 		return visit(parser.parse());
 	}
 	

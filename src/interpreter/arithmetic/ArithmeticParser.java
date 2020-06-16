@@ -6,6 +6,7 @@ import interpreter.arithmetic.ast.Composition;
 import interpreter.arithmetic.ast.UnaryOperator;
 import interpreter.arithmetic.ast.Value;
 import interpreter.exceptions.ParsingException;
+import interpreter.generic.IterativeParser;
 import interpreter.generic.Token;
 
 /** calculator.Parser grammar
@@ -25,28 +26,13 @@ atom: 			func_expr
                 | "PI"
 func_expr:     ("EXP"|"LN"|"LOG"|"SQRT"|"COS"|"SIN"|"TAN"|"ABS"|...) "(" complex_expr ")"
  */
-public class Parser {
+public class ArithmeticParser extends IterativeParser<Type, AST> {
 	private static final Type[] arithOps = Type.getArithOps(), 
 		factorOps = Type.getFactorOps(),
 		shiftOps = Type.getShiftOps();
-	private Lexer lexer;
-	private Token<Type> currentToken;
 	
-	public Parser(Lexer lexer) throws ParsingException {
-		this.lexer = lexer;
-		currentToken = lexer.getNextToken();
-	}
-	
-	public AST error() throws ParsingException {
-		lexer.error();	// throws error with line and pos
-		return null;
-	}
-	
-	private boolean matches(Type[] types) {
-		for (Type type : types)
-			if (currentToken.type == type)
-				return true;
-		return false;
+	public ArithmeticParser(ArithmeticLexer lexer) throws ParsingException {
+		super(lexer);
 	}
 	
 	private boolean isFactorOp() {
@@ -61,18 +47,12 @@ public class Parser {
 		return matches(shiftOps);
 	}
 	
-	private void consume(Type type) throws ParsingException {
-		if (currentToken.type == type) 
-			currentToken = lexer.getNextToken();
-		else lexer.error();
-	}
-	
 	// atom: ("EXP"|"LN"|"LOG"|"SQRT"|"COS"|"SIN"|"TAN"|"ABS"|...) '(' complex_expr ')'
     //      | '(' complex_expr ')'
     //      | number
 	//		| PI
 	private AST atom() throws ParsingException {
-		Token<Type> token = currentToken;
+		Token<Type> token = current;
 		switch (token.type) {
 			case COS: case COS_HYPERBOLIC: case ARC_COS: case ARC_COS_HYPERBOLIC:
 			case SIN: case SIN_HYPERBOLIC: case ARC_SIN: case ARC_SIN_HYPERBOLIC:
@@ -104,7 +84,7 @@ public class Parser {
 	// power: atom ['**' factor]
 	private AST power() throws ParsingException {
 		AST node = atom();
-		Token<Type> token = currentToken;
+		Token<Type> token = current;
 		if (token.type == Type.POWER) {
 			consume(Type.POWER);
 			node = new BinaryOperator(node, token, factor());
@@ -114,7 +94,7 @@ public class Parser {
 	
 	// factor: ('+'|'-'|'~') factor | power
 	private AST factor() throws ParsingException {
-		Token<Type> token = currentToken;
+		Token<Type> token = current;
 		switch (token.type) {
 			case PLUS:
 			case MINUS:
@@ -130,7 +110,7 @@ public class Parser {
 		AST node = factor();
 		Token<Type> token;
 		while (isFactorOp()) {
-			token = currentToken;
+			token = current;
 			consume(token.type);
 			node = new BinaryOperator(node, token, factor());
 		}
@@ -142,7 +122,7 @@ public class Parser {
 		AST node = term();
 		Token<Type> token;
 		while (isArithOp()) {
-			token = currentToken;
+			token = current;
 			consume(token.type);
 			node = new BinaryOperator(node, token, term());
 		}
@@ -154,7 +134,7 @@ public class Parser {
 		AST node = arith_expr();
 		Token<Type> token;
 		while (isShiftOp()) {
-			token = currentToken;
+			token = current;
 			consume(token.type);
 			node = new BinaryOperator(node, token, arith_expr());
 		}
@@ -165,8 +145,8 @@ public class Parser {
 	private AST and_expr() throws ParsingException {
 		AST node = shift_expr();
 		Token<Type> token;
-		while (currentToken.type == Type.AND) {
-			token = currentToken;
+		while (current.type == Type.AND) {
+			token = current;
 			consume(token.type);
 			node = new BinaryOperator(node, token, shift_expr());
 		}
@@ -177,8 +157,8 @@ public class Parser {
 	private AST xor_expr() throws ParsingException {
 		AST node = and_expr();
 		Token<Type> token;
-		while (currentToken.type == Type.XOR) {
-			token = currentToken;
+		while (current.type == Type.XOR) {
+			token = current;
 			consume(token.type);
 			node = new BinaryOperator(node, token, and_expr());
 		}
@@ -189,8 +169,8 @@ public class Parser {
 	private AST complex_expr() throws ParsingException {
 		AST node = xor_expr();
 		Token<Type> token;
-		while (currentToken.type == Type.OR) {
-			token = currentToken;
+		while (current.type == Type.OR) {
+			token = current;
 			consume(token.type);
 			node = new BinaryOperator(node, token, xor_expr());
 		} 
@@ -198,8 +178,8 @@ public class Parser {
 	} 
 	
 	// expr: complex_expr
+	@Override
 	public AST parse() throws ParsingException {
 		return complex_expr();
 	}
-	
 }
