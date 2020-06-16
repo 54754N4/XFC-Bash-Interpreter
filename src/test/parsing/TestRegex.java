@@ -1,4 +1,4 @@
-package test;
+package test.parsing;
 
 import java.util.Arrays;
 
@@ -16,7 +16,8 @@ public class TestRegex {
 //		System.out.println(StrUtil.removeSmallestEnd("\\..*", input));
 
 		String input = "/home/bash\\/bash_hackers.txt";
-		System.out.println(Arrays.toString(input.split("(?<!\\\\)/")));
+		System.out.println(Arrays.toString(input.split("(?<!\\\\)/"))); // checks that it's NOT escaped
+		// using a regex lookahead (zero-length assertion)
 	}
 
 }
