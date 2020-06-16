@@ -1,28 +1,25 @@
 package model.user;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import model.command.Executable;
+import model.io.UserSerialiser;
 
 public class User implements Serializable {
-	private static final long serialVersionUID = -4472377149898201463L;
+	private static final long serialVersionUID = 3850931405417490261L;
 
 	public static final String DEFAULT_COMMAND_SHELL = Executable.getNativeInterpreter().split(" ")[0],
 			DEFAULT_HOME_DIR = "/home/default", 
 			DEFAULT_USERNAME = "default",
 			DEFAULT_COMMENT = "Default account";
 	
-	public static final User DEFAULT_ACCOUNT = new User(
+	public static final User DEFAULT_USER = new User(
 			DEFAULT_USERNAME, DEFAULT_COMMENT, 
 			DEFAULT_HOME_DIR, DEFAULT_COMMAND_SHELL
 	);
@@ -55,39 +52,6 @@ public class User implements Serializable {
 		return commandShell;
 	}
 	
-	public static File serialise(User user) throws FileNotFoundException, IOException {
-		File file = new File(user.username+".user");
-		try (ObjectOutputStream oos = new ObjectOutputStream(
-				new BufferedOutputStream(
-						new FileOutputStream(file)))) {
-			oos.writeObject(user);
-		}
-		return file;
-	}
-	
-	public static User deserialise(File file) throws FileNotFoundException, IOException, ClassNotFoundException {
-		try (ObjectInputStream ois = new ObjectInputStream(
-				new BufferedInputStream(
-						new FileInputStream(file)))) {
-			return (User) ois.readObject();
-		}
-	}
-	
-	public static User[] retrieve() throws FileNotFoundException, ClassNotFoundException, IOException {
-		String[] serialised = new File("users").list(new UserFilenameFilter());
-		User[] users = new User[serialised.length];
-		for (int i=0; i<serialised.length; i++) 
-			users[i] = deserialise(new File(serialised[i]));
-		return users;
-	}
-
-	public static class UserFilenameFilter implements FilenameFilter {
-		@Override
-		public boolean accept(File file, String name) {
-			return name.toLowerCase().endsWith(".user");
-		}
-	}
-	
 	@Override
 	public boolean equals(Object o) {
 		return User.class.isInstance(o) ? equals(User.class.cast(o)) : false;
@@ -101,6 +65,28 @@ public class User implements Serializable {
 	@Override
 	public String toString() {
 		return String.format("%s:%s:%s:%s", username, homeDirectory, comment, commandShell);
+	}
+	
+	public File serialise() throws FileNotFoundException, IOException {
+		return UserSerialiser.serialise(this);
+	}
+	
+	public static List<User> retrieveAll() throws FileNotFoundException, ClassNotFoundException, IOException {
+		String[] serialised = new File(UserSerialiser.LOCATION).list(new UserFilenameFilter());
+		List<User> users = new ArrayList<>(serialised.length);
+		for (int i=0; i<serialised.length; i++)
+			users.add(UserSerialiser.deserialise(new File(UserSerialiser.LOCATION+"/"+serialised[i])));
+		return users;
+	}
+
+	public static User retrieve(String username) {
+		List<User> users;
+		try { users = retrieveAll(); }
+		catch (ClassNotFoundException | IOException e) { return null; }
+		Optional<User> found = users.stream()
+				.filter(u -> u.getUsername().equals(username))
+				.findFirst();
+		return (found.isPresent()) ? found.get() : null;
 	}
 	
 	public static class Builder {
