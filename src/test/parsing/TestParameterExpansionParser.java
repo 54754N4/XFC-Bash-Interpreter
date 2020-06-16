@@ -1,7 +1,7 @@
 package test.parsing;
 
 import interpreter.parameter.Parser;
-import model.io.ConsoleContext;
+import model.ConsoleContext;
 
 public class TestParameterExpansionParser {
 
