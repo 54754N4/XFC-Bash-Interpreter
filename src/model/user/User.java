@@ -88,6 +88,21 @@ public class User implements Serializable {
 		}
 	}
 	
+	@Override
+	public boolean equals(Object o) {
+		return User.class.isInstance(o) ? equals(User.class.cast(o)) : false;
+	}
+	
+	public boolean equals(User u) {
+		return u.username.equals(username) && u.homeDirectory.equals(homeDirectory)
+				&& u.comment.equals(comment) && u.commandShell.equals(commandShell);
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("%s:%s:%s:%s", username, homeDirectory, comment, commandShell);
+	}
+	
 	public static class Builder {
 		private String username;
 		private String comment; 		// extra info
