@@ -43,10 +43,8 @@ public class Parser {
 		Point matched;
 		while (!(matched = findNext()).equals(NOT_FOUND))
 			matches.add(new Match(matched.x, matched.y));
-		for (Match match : matches) {
-//			System.out.printf("%s -> %s%n", match.name, match.replacement);
+		for (Match match : matches) 
 			result = result.replace(match.name, match.replacement);
-		}
 		return result;
 	}
 	
@@ -59,12 +57,52 @@ public class Parser {
 			int innerStart = (name.startsWith("${")) ? 2: 1,
 				innerEnd = (name.endsWith("}")) ? name.length()-1: name.length();
 			innerName = name.substring(innerStart, innerEnd);
-			for (ParameterFilters.Type type : ParameterFilters.Type.values())
+			for (ParameterFilters.Type type : ParameterFilters.Type.values()) {
 				if (type.filter.test(innerName)) {
-//					System.out.println("Filtered by "+type.name());
 					replacement = type.handler.apply(innerName);
 					break;
 				}
+			}
 		}
 	}
+	
+	/* Less object creation and memory footprint (due to less string storage):
+	
+	public String parse(String input) {
+		reset(input);
+		String result = input;
+		List<Point> matches = new ArrayList<>();
+		Point matched;
+		String name, innerName, replacement = "";
+		while (!(matched = findNext()).equals(NOT_FOUND)) 
+			matches.add(matched);
+		for (int i=0, offset; i<matches.size(); i++) {
+			matched = matches.get(i);
+			name = input.substring(matched.x, matched.y);
+			int innerStart = (name.startsWith("${")) ? 2: 1,
+				innerEnd = (name.endsWith("}")) ? name.length()-1: name.length();
+			innerName = name.substring(innerStart, innerEnd);
+			for (ParameterFilters.Type type : ParameterFilters.Type.values()) {
+				if (type.filter.test(innerName)) {
+					replacement = type.handler.apply(innerName);
+					break;
+				}
+			};
+			result = result.replace(name, replacement);
+			offset = replacement.length()-name.length();
+			offset(offset, i, matches);
+		}
+		return result;
+	}
+	
+	private static void offset(int offset, int from, List<Point> matches) {
+		Point point, offsetted;
+		for (int i=from; i<matches.size(); i++) {
+			point = matches.get(i);
+			offsetted = new Point(point.x+offset, point.y+offset);
+			matches.set(i, offsetted);
+		}
+	} 
+	
+	 */
 }
