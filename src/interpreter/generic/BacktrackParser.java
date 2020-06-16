@@ -26,6 +26,22 @@ public abstract class BacktrackParser<Type extends Enum<Type>, Tree> implements 
 	
 	protected abstract Type finalToken();
 	
+	protected boolean is(Type[] types) {
+		if (current >= tokens.size())
+			return false;
+		for (Type type : types)
+			if (is(type))
+				return true;
+		return false;
+	}
+	
+	protected void consume(Type type) throws ParsingException {
+		if (is(type)) 
+			current++;
+		else 
+			lexer.error("Expected type :"+type.name()+" "+type);
+	}
+	
 	protected Token<Type> current() {
 		return tokens.get(current);
 	}
@@ -40,22 +56,5 @@ public abstract class BacktrackParser<Type extends Enum<Type>, Tree> implements 
 	
 	protected boolean is(Type type) {
 		return current().type == type;
-	}
-	
-	@SuppressWarnings("unchecked")		// the types will always be correct ?
-	protected boolean is(Type...types) {
-		if (current >= tokens.size())
-			return false;
-		for (Type type : types)
-			if (is(type))
-				return true;
-		return false;
-	}
-	
-	protected void consume(Type type) throws ParsingException {
-		if (is(type)) 
-			current++;
-		else 
-			lexer.error("Expected type :"+type.name()+" "+type);
 	}
 }

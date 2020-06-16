@@ -11,7 +11,7 @@ public abstract class IterativeParser<Type extends Enum<Type>, Tree> implements 
 		current = lexer.getNextToken();
 	}
 	
-	protected boolean matches(Type[] types) {
+	protected boolean is(Type[] types) {
 		for (Type type : types)
 			if (current.type == type)
 				return true;
@@ -21,7 +21,8 @@ public abstract class IterativeParser<Type extends Enum<Type>, Tree> implements 
 	protected void consume(Type type) throws ParsingException {
 		if (current.type == type) 
 			current = lexer.getNextToken();
-		else lexer.error("Expected token of type: "+type.name());
+		else 
+			lexer.error("Expected token of type: "+type.name()+" "+type);
 	}
 	
 	public Tree error() throws ParsingException {

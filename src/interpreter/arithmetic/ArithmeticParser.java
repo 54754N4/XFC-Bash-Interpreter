@@ -36,15 +36,15 @@ public class ArithmeticParser extends IterativeParser<Type, AST> {
 	}
 	
 	private boolean isFactorOp() {
-		return matches(factorOps);
+		return is(factorOps);
 	}
 	
 	private boolean isArithOp() {
-		return matches(arithOps);
+		return is(arithOps);
 	}
 	
 	private boolean isShiftOp() {
-		return matches(shiftOps);
+		return is(shiftOps);
 	}
 	
 	// atom: ("EXP"|"LN"|"LOG"|"SQRT"|"COS"|"SIN"|"TAN"|"ABS"|...) '(' complex_expr ')'
