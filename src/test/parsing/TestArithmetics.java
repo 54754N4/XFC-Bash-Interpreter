@@ -1,4 +1,4 @@
-package test;
+package test.parsing;
 
 import interpreter.arithmetic.Interpreter;
 import interpreter.exceptions.ParsingException;
