@@ -2,7 +2,7 @@ package test.parsing;
 
 import java.util.Arrays;
 
-import interpreter.util.StrUtil;
+import util.StrUtil;
 
 @SuppressWarnings("unused")
 public class TestRegex {

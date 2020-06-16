@@ -2,10 +2,13 @@ package test.parsing;
 
 import java.io.FileNotFoundException;
 
-import interpreter.brace.Lexer;
-import interpreter.brace.Parser;
+import interpreter.brace.BraceLexer;
+import interpreter.brace.BraceParser;
+import interpreter.brace.Type;
 import interpreter.exceptions.ParsingException;
+import interpreter.generic.Token;
 
+@SuppressWarnings("unused")
 public class TestBraceParser {
 	public static void main(String[] args) throws ParsingException, FileNotFoundException {
 		String[] inputs = {
@@ -32,7 +35,7 @@ public class TestBraceParser {
 				"~/{Downloads,Pictures}/*.{jpg,gif,png}"
 		};
 		for (String input : inputs) {
-			Parser parser = new Parser(new Lexer(input));
+			BraceParser parser = new BraceParser(new BraceLexer(input));
 			System.out.println(String.format("\"%s\" expands to%n%s%n", input, parser.parseResultsString()));
 		}
 	}
@@ -72,4 +75,26 @@ public class TestBraceParser {
 //				expandR(results, pre + s.substring(0, i1), m, s.substring(i2 + 1) + suf);
 //		}
 //	}
+	
+	
+	// LEXING TEST
+	
+	/*
+	 * public static void main(String[] args) throws ParsingException {
+		String[] inputs = {
+				"{4}",
+				"4",
+				"a{abc,def,ghi}z",
+				"a{20..0..2}z",
+				"a{a..z..-2}z",
+				"a{b{c..x..-2}y,def,ghi}z",
+				"abc.we3-0xd{asd{a..z..-2},zibi{tas,toozi}}post"
+		};
+		String input = inputs[6];
+		BraceLexer lexer = new BraceLexer(input);
+		Token<Type> token;
+		while ((token = lexer.getNextToken()).type != Type.EOF)
+			System.out.println(token);
+	}
+	 */
 }

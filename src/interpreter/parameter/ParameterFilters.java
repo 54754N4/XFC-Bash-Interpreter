@@ -3,8 +3,8 @@ package interpreter.parameter;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import interpreter.util.StrUtil;
 import model.ConsoleContext;
+import util.StrUtil;
 
 public class ParameterFilters {
 	private static ConsoleContext context = ConsoleContext.INSTANCE;
