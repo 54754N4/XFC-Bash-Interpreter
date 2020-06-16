@@ -1,10 +1,10 @@
-package test;
+package test.io;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.*;
 
-public class Test {
+public class TestTransfers {
 	
 	private static String create() {
 		StringBuilder sb = new StringBuilder();
