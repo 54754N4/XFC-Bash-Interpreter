@@ -2,6 +2,7 @@ package test.io.command;
 
 import java.io.IOException;
 
+import model.ConsoleContext;
 import model.command.CustomCommand;
 import model.command.Executable;
 
@@ -23,7 +24,7 @@ public class TestCustom {
 	
 	static class Spit extends CustomCommand {
 		protected Spit() throws IOException {
-			super(null);
+			super(ConsoleContext.INSTANCE, null);
 		}
 
 		@Override
@@ -35,7 +36,7 @@ public class TestCustom {
 
 	static class Cat extends CustomCommand {
 		protected Cat() throws IOException {
-			super(null);
+			super(ConsoleContext.INSTANCE, null);
 		}
 		
 		@Override
@@ -46,7 +47,7 @@ public class TestCustom {
 
 	static class Grep extends CustomCommand {
 		protected Grep(String...parameters) throws IOException {
-			super(parameters);
+			super(ConsoleContext.INSTANCE, parameters);
 		}
 		
 		@Override

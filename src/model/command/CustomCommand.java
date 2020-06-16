@@ -10,9 +10,11 @@ import java.io.PipedOutputStream;
 import java.io.PrintWriter;
 import java.util.stream.Stream;
 
+import model.ConsoleContext;
 import model.io.StreamTransfer;
 
 public abstract class CustomCommand implements RedirectableExecutable {
+	protected ConsoleContext context;
 	protected final String[] parameters;	// akin to bash's positional parameters
 	private int exitCode;
 	private boolean merge;
@@ -21,7 +23,7 @@ public abstract class CustomCommand implements RedirectableExecutable {
 	private PrintWriter outWriter, errWriter;
 	protected BufferedReader reader;
 	
-	protected CustomCommand(String[] parameters) throws IOException {
+	protected CustomCommand(ConsoleContext context, String[] parameters) throws IOException {
 		this.parameters = parameters;
 		exitCode = Executable.SUCCESS;
 		merge = false;

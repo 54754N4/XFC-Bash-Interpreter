@@ -2,6 +2,7 @@ package test.io.command;
 
 import java.io.IOException;
 
+import model.ConsoleContext;
 import model.command.CustomCommand;
 import model.command.Executable;
 import model.command.NativeCommand;
@@ -18,13 +19,13 @@ public class TestMerged {
 		Executable.THREAD_POOL.submit(c0);
 		Executable.THREAD_POOL.submit(c1);
 		Executable.THREAD_POOL.submit(n2);
-		Thread.sleep(2000);
+		Thread.sleep(1000);
 		Executable.THREAD_POOL.shutdown();
 	}
 	
 	static class Spit extends CustomCommand {
 		protected Spit() throws IOException {
-			super(null);
+			super(ConsoleContext.INSTANCE, null);
 		}
 
 		@Override
@@ -36,7 +37,7 @@ public class TestMerged {
 
 	static class Cat extends CustomCommand {
 		protected Cat() throws IOException {
-			super(null);
+			super(ConsoleContext.INSTANCE, null);
 		}
 		
 		@Override
