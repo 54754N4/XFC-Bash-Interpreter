@@ -1,4 +1,4 @@
-package interpreter.util;
+package util;
 
 public class StrUtil {
 
