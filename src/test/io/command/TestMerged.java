@@ -1,23 +1,24 @@
-package test.command;
+package test.io.command;
 
 import java.io.IOException;
 
 import model.command.CustomCommand;
 import model.command.Executable;
+import model.command.NativeCommand;
 
-public class TestCustom {
+public class TestMerged {
 	public static void main(String[] args) throws InterruptedException, IOException {
 		CustomCommand c0 = new Spit(),
-				c1 = new Cat(),
-				c2 = new Grep("7");
+				c1 = new Cat();
+		NativeCommand n2 = new NativeCommand("grep 8");
 //		c0.stdout(c1.stdin());
 		c1.stdin(c0.stdout());	// equivalent to above
-		c1.stdout(c2.stdin());
-		c2.stdout(System.out);
+		c1.stdout(n2.stdin());
+		n2.stdout(System.out);
 		Executable.THREAD_POOL.submit(c0);
 		Executable.THREAD_POOL.submit(c1);
-		Executable.THREAD_POOL.submit(c2);
-		Thread.sleep(5000);
+		Executable.THREAD_POOL.submit(n2);
+		Thread.sleep(2000);
 		Executable.THREAD_POOL.shutdown();
 	}
 	
@@ -41,19 +42,6 @@ public class TestCustom {
 		@Override
 		protected void execute() throws Exception {
 			reader.lines().forEach(this::println);
-		}
-	}
-
-	static class Grep extends CustomCommand {
-		protected Grep(String...parameters) throws IOException {
-			super(parameters);
-		}
-		
-		@Override
-		protected void execute() throws Exception {
-			reader.lines()
-				.filter(line -> line.contains(parameters[0]))
-				.forEach(this::println);
 		}
 	}
 }
