@@ -18,7 +18,7 @@ public class User implements Serializable {
 	private static final long serialVersionUID = -4472377149898201463L;
 
 	public static final String DEFAULT_COMMAND_SHELL = Executable.getNativeInterpreter().split(" ")[0],
-			DEFAULT_HOME_DIR = "/", 
+			DEFAULT_HOME_DIR = "/home/default", 
 			DEFAULT_USERNAME = "default",
 			DEFAULT_COMMENT = "Default account";
 	
