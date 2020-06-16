@@ -1,10 +1,10 @@
-package test;
+package test.io;
 
 import java.io.IOException;
 
 import model.io.StreamTransfer;
 
-public class Test2 {
+public class TestNativeTransfer {
 	private static ProcessBuilder builder = new ProcessBuilder();
 	
 	private static Process launch(String...cmd) throws IOException {
