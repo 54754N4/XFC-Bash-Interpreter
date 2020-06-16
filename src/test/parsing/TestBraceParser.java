@@ -1,4 +1,4 @@
-package test;
+package test.parsing;
 
 import java.io.FileNotFoundException;
 
