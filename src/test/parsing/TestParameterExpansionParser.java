@@ -1,4 +1,4 @@
-package test;
+package test.parsing;
 
 import interpreter.parameter.Parser;
 import model.io.ConsoleContext;
