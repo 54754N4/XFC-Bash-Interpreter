@@ -1,6 +1,6 @@
 package test.context;
 
-import model.io.DirectoryStack;
+import model.DirectoryStack;
 
 public class TestDirectoryStack {
 	public static void main(String[] args) {

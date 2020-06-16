@@ -1,12 +1,11 @@
 package test.context;
 
-import model.io.ConsoleContext;
-
+import model.ConsoleContext;
 import model.user.User;
 
 public class TestContextPushd {
 	public static void main(String[] args) {
-		ConsoleContext context = new ConsoleContext(User.DEFAULT_ACCOUNT);
+		ConsoleContext context = new ConsoleContext(User.DEFAULT_USER);
 		System.out.println(context.get("PWD"));			// /home/default
 		context.pushd("/bin/bash/source/");
 		System.out.println(context.get("PWD"));			// /bin/bash/source/
