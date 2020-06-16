@@ -23,11 +23,11 @@
 |    +---- Assign default value                       ${param:=value}
 |    +---- Use alternate value                        ${param:+value}
 |    +---- Display error if null or unset             ${param:?value}
-+---- Arithmetic expansion
++---- Arithmetic expansion                            $((expression))
++---- Tilde expansion                                 ~[username]
 ```
 #### Incomplete:
 ```
-+---- Tilde expansion
 +---- Pathname expansion
 +---- Command substitution
 +---- Process substitution
