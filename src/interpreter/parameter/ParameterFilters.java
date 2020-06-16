@@ -4,7 +4,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import interpreter.util.StrUtil;
-import model.io.ConsoleContext;
+import model.ConsoleContext;
 
 public class ParameterFilters {
 	private static ConsoleContext context = ConsoleContext.INSTANCE;

@@ -48,7 +48,7 @@ public class Parser {
 		return result;
 	}
 	
-	public class Match {
+	private final class Match {
 		public String name, innerName;
 		public String replacement;
 		
