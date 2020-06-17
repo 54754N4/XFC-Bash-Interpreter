@@ -24,7 +24,7 @@
 |    +---- Use alternate value                        ${param:+value}
 |    +---- Display error if null or unset             ${param:?value}
 +---- Arithmetic expansion                            $((expression))
-+---- Tilde expansion                                 ~[username]
++---- Tilde expansion                                 ~[+|-|username]?
 ```
 #### Incomplete:
 ```
@@ -39,8 +39,8 @@
 ```
 +---- Native commands
 +---- Custom commands
-+---- I/O redirection and piping
-+---- Native and custom command interoperability
++---- Here-documents as InputStream
++---- I/O redirection and piping (native and custom command interoperability)
 ```
 
 #### Incomplete:
