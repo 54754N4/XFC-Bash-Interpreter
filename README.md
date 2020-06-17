@@ -41,12 +41,13 @@
 +---- Custom commands
 +---- Here-documents as InputStream
 +---- I/O redirection and piping (native and custom command interoperability)
++---- Bash 
+|    +---- Grammar
 ```
 
 #### Incomplete:
 ```
 +---- Bash 
-|    +---- Grammar
 |    +---- Lexer
 |    +---- Parser
 |    +---- Interpreter
