@@ -180,7 +180,7 @@ elif_clause:	ELIF compound_list THEN compound_list
 			;
 
 case_clause:	pattern_list
-	|	case_clause_sequence pattern_list
+			|	case_clause_sequence pattern_list
 			;
 
 pattern_list:	newline_list pattern ')' compound_list
@@ -210,14 +210,13 @@ list:		newline_list list0
 			;
 
 compound_list:	list
-	|	newline_list list1
+			|	newline_list list1
 			;
 
 list0:  	list1 '\n' newline_list
-	|	list1 '&' newline_list
+			|	list1 '&' newline_list
 			|	list1 ';' newline_list
-
-	;
+			;
 
 list1:		list1 AND_AND newline_list list1
 			|	list1 OR_OR newline_list list1
@@ -228,17 +227,17 @@ list1:		list1 AND_AND newline_list list1
 			;
 
 simple_list_terminator:	'\n'
-	|	yacc_EOF
-	;
+			|	yacc_EOF
+			;
 
-list_terminator:'\n'
-		|	';'
-		|	yacc_EOF
-		;
+list_terminator:	'\n'
+			|	';'
+			|	yacc_EOF
+			;
 
 newline_list:
-	|	newline_list '\n'
-	;
+			|	newline_list '\n'
+			;
 
 /* A simple_list is a list that contains no significant newlines
    and no leading or trailing newlines.  Newlines are allowed
