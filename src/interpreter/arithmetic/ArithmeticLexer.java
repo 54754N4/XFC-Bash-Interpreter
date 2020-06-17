@@ -13,7 +13,7 @@ public class ArithmeticLexer extends Lexer<Type> {
 	private double number() throws ParsingException {
 		StringBuilder result = new StringBuilder();
 		boolean foundDot = false;
-		while ((isDigit() || isDot()) && !isFinished()) {
+		while ((isDigit() || isDot()) && notFinished()) {
 			if (isDot() && foundDot)
 				error();
 			else if (isDot())
@@ -36,7 +36,7 @@ public class ArithmeticLexer extends Lexer<Type> {
 	
 	@Override
 	public Token<Type> getNextToken() throws ParsingException {
-		while (!isFinished()) {
+		while (notFinished()) {
 			if (isSpace()) skipWhiteSpace();
 			else if (isNewline()) skipNewline();
 			else if (isLetter()) return matchWord();

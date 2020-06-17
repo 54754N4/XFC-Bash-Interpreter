@@ -16,8 +16,7 @@ public abstract class Lexer<Type extends Enum<Type>> {
 	public abstract Token<Type> getNextToken() throws ParsingException;
 	
 	protected void advance() {
-		if (!isFinished())
-			current = text.charAt(++pos);
+		if (notFinished()) current = text.charAt(++pos);
 	}
 	
 	protected void advance(int i) {
@@ -30,6 +29,10 @@ public abstract class Lexer<Type extends Enum<Type>> {
 	
 	protected boolean isFinished() {
 		return is('\0');
+	}
+	
+	protected boolean notFinished() {
+		return !isFinished();
 	}
 	
 	protected boolean isSpace() {

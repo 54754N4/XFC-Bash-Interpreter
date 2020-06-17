@@ -28,7 +28,7 @@ public class BraceLexer extends Lexer<Type> {
 	
 	private Token<Type> word() {
 		String word = "";
-		while ((isChar() || (!isChar() && isEscaped())) && !isFinished()) {
+		while ((isChar() || (!isChar() && isEscaped())) && notFinished()) {
 			word += current;
 			advance();
 		}
@@ -39,7 +39,7 @@ public class BraceLexer extends Lexer<Type> {
 	}
 	
 	public Token<Type> getNextToken() throws ParsingException {
-		while (!isFinished()) {
+		while (notFinished()) {
 			skipWhiteSpace();
 			skipNewline();
 			if (isChar()) return word();
