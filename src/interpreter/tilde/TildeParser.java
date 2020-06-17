@@ -3,12 +3,19 @@ package interpreter.tilde;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import interpreter.generic.Parser;
 import model.ConsoleContext;
 import model.user.User;
 
-public class Parser {
+public class TildeParser implements Parser<String> {
+	private String input;
 	
-	public String parse(String input) {
+	public TildeParser(String input) {
+		this.input = input;
+	}
+	
+	@Override
+	public String parse() {
 		String result = input, name, target, pwd, oldpwd, home;
 		Matcher m = Pattern.compile("(~([a-z\" ]+))").matcher(result);
 		if (m.matches()) {

@@ -1,6 +1,6 @@
 package test.parsing;
 
-import interpreter.tilde.Parser;
+import interpreter.tilde.TildeParser;
 
 public class TestTildeParser {
 	public static void main(String[] args) {
@@ -12,8 +12,7 @@ public class TestTildeParser {
 			"~\"default\"",
 			"PATH=~/mybins:~peter/mybins:$PATH"
 		};
-		Parser parser = new Parser();
 		for (String input : inputs)
-			System.out.println(parser.parse(input));
+			System.out.println(new TildeParser(input).parse());
 	}
 }
