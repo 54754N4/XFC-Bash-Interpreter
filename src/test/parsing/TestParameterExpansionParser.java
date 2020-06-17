@@ -1,6 +1,6 @@
 package test.parsing;
 
-import interpreter.parameter.Parser;
+import interpreter.parameter.ParameterParser;
 import model.ConsoleContext;
 
 public class TestParameterExpansionParser {
@@ -23,9 +23,8 @@ public class TestParameterExpansionParser {
 			"${string//in/with}",	// replace all "in" with "with"
 			"${string:35:13} ${string:35}"
 		}; 
-		Parser parser = new Parser();
 		for (String input : inputs)
-			System.out.println(parser.parse(input));
+			System.out.println(new ParameterParser(input, context).parse());
 	}
 
 }

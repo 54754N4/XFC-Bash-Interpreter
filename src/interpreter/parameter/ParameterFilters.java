@@ -1,5 +1,7 @@
 package interpreter.parameter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -7,55 +9,58 @@ import model.ConsoleContext;
 import util.StrUtil;
 
 public class ParameterFilters {
-	private static ConsoleContext context = ConsoleContext.INSTANCE;
+	private ConsoleContext context;
+	private List<Predicate<String>> filters;
+	private List<Function<String, String>> handlers;
 	
-	public static enum Type {
-		SIMPLE(
-				ParameterFilters::checkSimple,
-				ParameterFilters::handleSimple),
-		CASE_MODIFICATION(
-				ParameterFilters::checkCaseModification,
-				ParameterFilters::handleCaseModification),
-		VARIABLE_NAME_EXPANSION(
-				ParameterFilters::checkVariableNameExpansion,
-				ParameterFilters::handleVariableNameExpansion),
-		INDIRECTION(
-				ParameterFilters::checkIndirection,
-				ParameterFilters::handleIndirection),	// nneds to be after variable_name_expansion
-		STRING_LENGTH(
-				ParameterFilters::checkStringLength,
-				ParameterFilters::handleStringLength),	// needs to be before substring_removal
-		SUBSTRING_REMOVAL(
-				ParameterFilters::checkSubstringRemoval,
-				ParameterFilters::handleSubstringRemoval),
-		SEARCH_REPLACE(
-				ParameterFilters::checkSearchReplace,
-				ParameterFilters::handleSearchReplace),
-		USE_DEFAULT(
-				ParameterFilters::checkUseDefault,
-				ParameterFilters::handleUseDefault),
-		ASSIGN_DEFAULT(
-				ParameterFilters::checkAssignDefault,
-				ParameterFilters::handleAssignDefault),
-		USE_ALTERNATIVE(
-				ParameterFilters::checkUseAlternative,
-				ParameterFilters::handleUseAlternative),
-		DISPLAY_ERROR(
-				ParameterFilters::checkDisplayError,
-				ParameterFilters::handleDisplayError),
-		SUBSTRING_EXPANSION(
-				ParameterFilters::checkSubstringExpansion,
-				ParameterFilters::handleSubstringExpansion);	// needs to be last check
-		
-		public final Predicate<String> filter;
-		public final Function<String, String> handler;
-		
-		private Type(Predicate<String> filter, Function<String, String> handler) {
-			this.filter = filter;
-			this.handler = handler;
-		}
+	public ParameterFilters(ConsoleContext context) {
+		this.context = context;
+		filters = createFilters();
+		handlers = createHandlers();
 	}
 	
+	private List<Predicate<String>> createFilters() {
+		List<Predicate<String>> filters = new ArrayList<>(); 
+		filters.add(ParameterFilters::checkSimple);
+		filters.add(ParameterFilters::checkCaseModification);
+		filters.add(ParameterFilters::checkVariableNameExpansion);
+		filters.add(ParameterFilters::checkIndirection);
+		filters.add(ParameterFilters::checkStringLength);
+		filters.add(ParameterFilters::checkSubstringRemoval);
+		filters.add(ParameterFilters::checkSearchReplace);
+		filters.add(ParameterFilters::checkUseDefault);
+		filters.add(ParameterFilters::checkAssignDefault);
+		filters.add(ParameterFilters::checkUseAlternative);
+		filters.add(ParameterFilters::checkDisplayError);
+		filters.add(ParameterFilters::checkSubstringExpansion);
+		return filters;
+	}
+	
+	private List<Function<String, String>> createHandlers() {
+		List<Function<String, String>> handlers = new ArrayList<>();
+		handlers.add(this::handleSimple);
+		handlers.add(this::handleCaseModification);
+		handlers.add(this::handleVariableNameExpansion);
+		handlers.add(this::handleIndirection);
+		handlers.add(this::handleStringLength);
+		handlers.add(this::handleSubstringRemoval);
+		handlers.add(this::handleSearchReplace);
+		handlers.add(this::handleUseDefault);
+		handlers.add(this::handleAssignDefault);
+		handlers.add(this::handleUseAlternative);
+		handlers.add(this::handleDisplayError);
+		handlers.add(this::handleSubstringExpansion);
+		return handlers;
+	}
+	
+	public List<Predicate<String>> getFilters() {
+		return filters;
+	}
+
+	public List<Function<String, String>> getHandlers() {
+		return handlers;
+	}
+
 	/* Filter checking implementations */
 	
 	public static boolean checkSimple(String str) {
@@ -113,13 +118,13 @@ public class ParameterFilters {
 	
 	/* Handlers implementations */
 	
-	public static String handleSimple(String str) {
+	public String handleSimple(String str) {
 		String value = context.get(str); 
 		value = (value == null) ? "" : value;
 		return value;
 	}
 	
-	public static String handleCaseModification(String str) {
+	public String handleCaseModification(String str) {
 		if (str.endsWith("^^"))	// all upper case
 			return handleSimple(str.substring(0, str.length()-2)).toUpperCase();
 		else if (str.endsWith("^")) { // first upper case
@@ -139,7 +144,7 @@ public class ParameterFilters {
  		return str;
 	}
 	
-	public static String handleVariableNameExpansion(String str) {
+	public String handleVariableNameExpansion(String str) {
 		final String prefix = str.substring(1, str.length()-1);
 		StringBuilder sb = new StringBuilder();
 		context.getEnvironment().forEach((k, v) -> {
@@ -149,15 +154,15 @@ public class ParameterFilters {
 		return sb.toString().trim();
 	}
 	
-	public static String handleIndirection(String str) {
+	public String handleIndirection(String str) {
 		return handleSimple(handleSimple(str.substring(1)));
 	}
 	
-	public static String handleStringLength(String str) {
+	public String handleStringLength(String str) {
 		return ""+handleSimple(str.substring(1)).length();
 	}
 	
-	public static String handleSubstringRemoval(String str) {
+	public String handleSubstringRemoval(String str) {
 		String[] split;
 		String result;
 		if (str.contains("##")) {
@@ -180,7 +185,7 @@ public class ParameterFilters {
 		return str;
 	}
 	
-	public static String handleSearchReplace(String str) {
+	public String handleSearchReplace(String str) {
 		String[] split0, split1;
 		String result = "", match = "", replacement = "";
 		boolean all = false;
@@ -205,7 +210,7 @@ public class ParameterFilters {
 				result.replaceFirst(match, replacement);
 	}
 	
-	public static String handleUseDefault(String str) {
+	public String handleUseDefault(String str) {
 		String[] split;
 		String result;
 		if (str.contains(":-")) {
@@ -220,7 +225,7 @@ public class ParameterFilters {
 		return str;
 	}
 	
-	public static String handleAssignDefault(String str) {
+	public String handleAssignDefault(String str) {
 		String[] split;
 		String result;
 		if (str.contains(":=")) {
@@ -241,7 +246,7 @@ public class ParameterFilters {
 		return str;
 	}
 	
-	public static String handleUseAlternative(String str) {
+	public String handleUseAlternative(String str) {
 		String[] split;
 		String result;
 		if (str.contains(":+")) {
@@ -256,7 +261,7 @@ public class ParameterFilters {
 		return str;
 	}
 	
-	public static String handleDisplayError(String str) {
+	public String handleDisplayError(String str) {
 		String[] split;
 		String result;
 		if (str.contains(":?")) {
@@ -279,7 +284,7 @@ public class ParameterFilters {
 		return str;
 	}
 	
-	public static String handleSubstringExpansion(String str) {
+	public String handleSubstringExpansion(String str) {
 		String[] split = str.split(StrUtil.unescapedFormat(":"));
 		String result = handleSimple(split[0]); 
 		int offset = Integer.parseInt(split[1]), 
