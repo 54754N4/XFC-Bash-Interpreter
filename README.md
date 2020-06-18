@@ -28,9 +28,10 @@
 ```
 #### Incomplete:
 ```
-+---- Pathname expansion
-+---- Command substitution
-+---- Process substitution
++---- Pathname expansion                              
++---- Command substitution                            $(expression)
++---- Process substitution                            [<>](sequence) 
++---- Conditional commands                            [[expression]]
 ```
 
 ## Terminal
