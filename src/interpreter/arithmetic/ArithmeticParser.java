@@ -85,7 +85,7 @@ public class ArithmeticParser extends IterativeParser<Type, AST> {
 	private AST power() throws ParsingException {
 		AST node = atom();
 		Token<Type> token = current;
-		if (token.type == Type.POWER) {
+		if (is(Type.POWER)) {
 			consume(Type.POWER);
 			node = new BinaryOperator(node, token, factor());
 		} 
