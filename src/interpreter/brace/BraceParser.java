@@ -9,7 +9,7 @@ import interpreter.brace.ast.Expression;
 import interpreter.brace.ast.RangeExpression;
 import interpreter.brace.ast.Text;
 import interpreter.exceptions.ParsingException;
-import interpreter.generic.BacktrackParser;
+import interpreter.generic.LookaheadParser;
 import interpreter.generic.Token;
 
 /*  expr:		word
@@ -28,15 +28,10 @@ import interpreter.generic.Token;
  *  char: 		[a-zA-Z]
  *  num: 		0*[0-9]
  */
-public class BraceParser extends BacktrackParser<Type, Expression> { 
-
-	public BraceParser(BraceLexer lexer) throws ParsingException {
-		super(lexer);
-	}
+public class BraceParser extends LookaheadParser<Type, Expression> { 
 	
-	@Override
-	protected Type finalToken() {
-		return Type.EOF;
+	public BraceParser(BraceLexer lexer) throws ParsingException {
+		super(lexer, 1);	// lookahead of 1 token only
 	}
 
 	// Production Rules
@@ -48,7 +43,7 @@ public class BraceParser extends BacktrackParser<Type, Expression> {
 	 * 			| expression
 	 */
 	private Expression word() throws ParsingException {
-		Token<Type> token = current();
+		Token<Type> token = current;
 		if (is(new Type[] {Type.TEXT, Type.CHAR, Type.NUMBER})) {
 			consume(token.type);
 			return new Text(token);
@@ -62,15 +57,15 @@ public class BraceParser extends BacktrackParser<Type, Expression> {
 	 */
 	private Expression rangeExpression(Expression preamble) throws ParsingException {
 		Expression postscript = new Text(new Token<>(Type.TEXT, ""));
-		Token<Type> start = current(), 
+		Token<Type> start = current, 
 				increment = new Token<>(Type.NUMBER, "1");
 		consume(start.type);
 		consume(Type.RANGE);
-		Token<Type> end = current();
+		Token<Type> end = current;
 		consume(end.type);
 		if (is(Type.RANGE)) {
 			consume(Type.RANGE);
-			increment = current();
+			increment = current;
 			consume(Type.NUMBER);
 		}
 		consume(Type.EXPR_END);
@@ -105,11 +100,9 @@ public class BraceParser extends BacktrackParser<Type, Expression> {
 		if (!is(Type.EXPR_START))
 			return preamble;
 		consume(Type.EXPR_START);
-		save();	// save to backtrack in case it wasn't a range expression
-		if (is(new Type[] {Type.NUMBER, Type.CHAR})) {
-			try { return rangeExpression(preamble); }
-			catch (ParsingException e) { backtrack(); }
-		} return csvExpression(preamble);
+		if (is(new Type[] {Type.NUMBER, Type.CHAR}) && peek(1) == Type.RANGE)
+			return rangeExpression(preamble);
+		return csvExpression(preamble);
 	}
 	
 	@Override
