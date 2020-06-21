@@ -1,43 +1,55 @@
 package test.parsing;
 
-import java.io.FileNotFoundException;
-
 import interpreter.brace.BraceLexer;
 import interpreter.brace.BraceParser;
 import interpreter.brace.Type;
 import interpreter.exceptions.ParsingException;
 import interpreter.generic.Token;
 
-@SuppressWarnings("unused")
 public class TestBraceParser {
-	public static void main(String[] args) throws ParsingException, FileNotFoundException {
-		String[] inputs = {
-				"{4,2}",
-				"4",
-				"i am just text",
-				"a{abc,def,ghi}z",
-				"a{20..0..2}z",
-				"a{a..z..-2}z",
-				"a{b{c..x..-2}y,def,ghi}z",
-				"abc.we3-0xd{asd{a..z..-2},zibi{tas,toozi}}post",
-				"{a,b}$PATH",
-				"{1..10}",
-				"{0001..10}",
-				"1.{0..9}",
-				"{{A..Z},{a..z}}",
-				"{A..Z}{0..9}",
-				"{A..Z}{0..9}{z..a}",
-//				"{A..Z}{0..9}{z..a}{9..0}",
-				"{3..-2}",
-				"{a,b{1..3},c}",
-				"{,{,gotta have{ ,\\, again\\, }}more }cowbell!",
-				"It{{em,alic}iz,erat}e{d,}",	
-				"~/{Downloads,Pictures}/*.{jpg,gif,png}"
-		};
+	static String[] inputs = {
+		"{4,2}",
+		"4",
+		"i am just text",
+		"a{abc,def,ghi}z",
+		"a{20..0..2}z",
+		"a{a..z..-2}z",
+		"a{b{c..x..-2}y,def,ghi}z",
+		"abc.we3-0xd{asd{a..z..-2},zibi{tas,toozi}}post",
+		"{a,b}$PATH",
+		"{1..10}",
+		"{0001..10}",
+		"1.{0..9}",
+		"{{A..Z},{a..z}}",
+		"{A..Z}{0..9}",
+		"{A..Z}{0..9}{z..a}",
+//		"{A..Z}{0..9}{z..a}{9..0}",
+		"{3..-2}",
+		"{a,b{1..3},c}",
+		"{,{,gotta have{ ,\\, again\\, }}more }cowbell!",
+		"It{{em,alic}iz,erat}e{d,}",	
+		"~/{Downloads,Pictures}/*.{jpg,gif,png}"
+	};
+	
+	public static void testLexer() throws ParsingException {
+		String text = "a{b{c..x..-2}y,def,ghi}z";
+		BraceLexer lexer = new BraceLexer(text);
+		Token<Type> token;
+		int i=0;
+		while ((token = lexer.getNextToken()).type != Type.EOF)
+			System.out.println(i+++": "+token);
+	}
+	
+	public static void testParser() throws ParsingException {
 		for (String input : inputs) {
 			BraceParser parser = new BraceParser(new BraceLexer(input));
 			System.out.println(String.format("\"%s\" expands to%n%s%n", input, parser.parseResultsString()));
 		}
+	}
+	
+	public static void main(String[] args) throws ParsingException {
+//		testLexer();
+		testParser();
 	}
 
 //	public static List<String> expand(String s) {
