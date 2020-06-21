@@ -3,14 +3,14 @@ package interpreter.generic;
 import interpreter.exceptions.ParsingException;
 
 public abstract class Lexer<Type extends Enum<Type>> {
-	private String text;
-	private int pos, line;
+	protected String text;
+	protected int line, pos;
 	protected char current;
 	
 	public Lexer(String text) {
 		this.text = text+"\0";
 		pos = line = 0;
-		current = text.charAt(0);
+		current = this.text.charAt(0);
 	}
 	
 	public abstract Token<Type> getNextToken() throws ParsingException;
