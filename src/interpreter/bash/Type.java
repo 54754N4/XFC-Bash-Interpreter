@@ -1,17 +1,18 @@
 package interpreter.bash;
 
 public enum Type {
-	IF, THEN, ELSE, ELIF, FI, CASE, ESAC, FOR, SELECT, WHILE, UNTIL, DO, DONE, FUNCTION, COPROC,
+	IF, THEN, ELSE, ELIF, FI, CASE, ESAC, FOR, SELECT, 
+	WHILE, UNTIL, DO, DONE, FUNCTION, COPROC, IN, 
 	COND_START("[["), COND_END("]]"),
-	IN, BANG("!"), TIME, TIMEOPT("-p"), TIMEIGN("--"),
+	BANG("!"), TIME, TIMEOPT("-p"), TIMEIGN("--"),
 	
-	AND_AND("&&"), BAR_BAR("||"), GREATER_GREATER(">>"), LESS_LESS("<<"), LESS_AND("<&"), 
-	GREATER_AND(">&"), SEMI_SEMI(";;"), SEMI_AND(";&"), SEMI_SEMI_AND(";;&"),
-	LESS_LESS_MINUS("<<-"), LESS_LESS_LESS("<<<"),	// i might not implement here-docs
-	AND_GREATER("&>"), AND_GREATER_GREATER("&>>"), LESS_GREATER("<>"), GREATER_BAR(">|"), 
-	BAR_AND("|&"),
+	AND_AND("&&"), BAR_BAR("||"), BAR_AND("|&"), GREATER_GREATER(">>"), LESS_AND("<&"), 
+	GREATER_AND(">&"), AND_GREATER("&>"), AND_GREATER_GREATER("&>>"), 
+	LESS_GREATER("<>"), GREATER_BAR(">|"),
+	LESS_LESS("<<"), LESS_LESS_MINUS("<<-"), LESS_LESS_LESS("<<<"),						// heredocs
+	SEMI_SEMI(";;"), SEMI_AND(";&"), SEMI_SEMI_AND(";;&"),								// case terminators
+	GREATER(">"), LESS("<"), DASH("-"), SEMI(";"), BAR("|"), AND("&"), 
 	CURLY_START("{"), CURLY_END("}"), PAREN_START("("), PAREN_END(")"),
-	GREATER(">"), LESS("<"), MINUS("-"), SEMI(";"), BAR("|"), AND("&"), 
 	
 	NEWLINE("\n"),
 	EOF("EOF"),
