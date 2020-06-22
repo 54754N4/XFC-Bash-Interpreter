@@ -27,6 +27,10 @@ public abstract class Lexer<Type extends Enum<Type>> {
 		return current == c;
 	}
 	
+	protected boolean isNot(char c) {
+		return !is(c);
+	}
+	
 	protected boolean isFinished() {
 		return is('\0');
 	}
