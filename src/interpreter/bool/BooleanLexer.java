@@ -9,21 +9,33 @@ public class BooleanLexer extends Lexer<Type> {
 	public BooleanLexer(String text) {
 		super(text);
 	}
-
-	private Token<Type> word() {
+	
+	private Token<Type> quotedWord() {
 		StringBuilder word = new StringBuilder();
-		boolean isQuoted = is('"'); 
-		if (isQuoted) advance();	// we still have to consume quotes
-		while ((!isSpace() || (isQuoted && !is('"'))) 
-				&& !is(')') && notFinished()) {
+		advance();
+		while (isNot('"') && notFinished()) {
 			word.append(current);
 			advance();
 		}
-		if (isQuoted) advance();
+		advance();
+		return tokenize(word);
+	}
+
+	private Token<Type> word() {
+		StringBuilder word = new StringBuilder();
+		while (!isSpace() && isNot(')') && notFinished()) {
+			word.append(current);
+			advance();
+		}
+		return tokenize(word);
+	}
+	
+	private Token<Type> tokenize(StringBuilder word) {
 		String value = word.toString();
 		if (isInteger(value))
 			return new Token<>(Type.NUMBER, value);
-		if (value.toLowerCase().equals("true") || value.toLowerCase().equals("false"))
+		if (value.toLowerCase().equals("true") 
+				|| value.toLowerCase().equals("false"))
 			return new Token<>(Type.CONSTANT, value);
 		return new Token<>(Type.STRING, value);
 	}
@@ -48,7 +60,8 @@ public class BooleanLexer extends Lexer<Type> {
 			if (isSpace()) skipWhiteSpace();
 			else if (isNewline()) skipNewline();
 			else if (is('-')) return operator();
-			else if (is('"') || is('$') || isLetter() || isDigit()) return word();
+			else if (is('"')) return quotedWord();
+			else if (is('$') || isLetter() || isDigit()) return word();
 			else {
 				char c = current;
 				advance();
