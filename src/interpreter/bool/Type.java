@@ -16,6 +16,7 @@ public enum Type {
 	IS_ZERO("-z"), IS_NON_ZERO("-n"), 											// for strings length
 	NOT("!"),
 	// Binary operators
+	AND("&&"), OR("||"),
 	STR_EQUAL("=="), STR_EQUAL_POSIX("="), STR_MATCH("=~"), 
 	STR_NOT_EQUAL("!="), STR_LESS_THAN("<"), STR_GREATER_THAN(">"), 			// sorted lexicographically
 	EQUAL("-eq"), NOT_EQUAL("-ne"), LESS_THAN("-lt"),
