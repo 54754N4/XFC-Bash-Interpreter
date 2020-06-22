@@ -14,7 +14,7 @@ public class Test {
 			if (input.toLowerCase().equals("exit"))
 				break;
 			try {
-				System.out.println(new Interpreter(input).interpret());
+				System.out.println(new ArithmeticInterpreter(input).interpret());
 			} catch (ParsingException e) {
 				System.err.println(e.getMessage());
 			}
