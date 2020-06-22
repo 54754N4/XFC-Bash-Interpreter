@@ -83,7 +83,18 @@ public class BooleanLexer extends Lexer<Type> {
 							advance();
 							return new Token<>(Type.STR_NOT_EQUAL);
 						} return new Token<>(Type.NOT);
-					default: error("Unrecognised char");
+					case '&':
+						if (is('&')) {
+							advance();
+							return new Token<>(Type.AND);
+						}
+						return error("Unrecognised char");
+					case '|':
+						if (is('|')) {
+							advance();
+							return new Token<>(Type.OR);
+						}
+					default: return error("Unrecognised char");
 				}
 			}
 		} return new Token<>(Type.EOF);
