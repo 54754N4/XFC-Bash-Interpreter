@@ -19,7 +19,7 @@ public abstract class CustomCommand implements RedirectableExecutable {
 	private int exitCode;
 	private boolean merge;
 	private InputStream innerInput, outerOutput, outerError, redirectedInput;
-	private OutputStream innerOutput, innerError, outerInput, redirectedOutput, redirectedError;
+	private OutputStream outerInput, innerOutput, innerError, redirectedOutput, redirectedError;
 	private PrintWriter outWriter, errWriter;
 	protected BufferedReader reader;
 	
