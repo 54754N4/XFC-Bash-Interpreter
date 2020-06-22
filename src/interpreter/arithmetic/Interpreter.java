@@ -7,11 +7,11 @@ import interpreter.arithmetic.ast.Value;
 import interpreter.arithmetic.ast.Visitor;
 import interpreter.exceptions.ParsingException;
 
-public class ArithmeticInterpreter implements Visitor {
+public class Interpreter implements Visitor {
 	public String input;
 	private ArithmeticParser parser;
 	
-	public ArithmeticInterpreter(String input)  {
+	public Interpreter(String input)  {
 		this.input = input;
 	}
 	
