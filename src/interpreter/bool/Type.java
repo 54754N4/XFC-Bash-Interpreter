@@ -18,7 +18,7 @@ public enum Type {
 	// Binary operators
 	STR_EQUAL("=="), STR_EQUAL_POSIX("="), STR_MATCH("=~"), 
 	STR_NOT_EQUAL("!="), STR_LESS_THAN("<"), STR_GREATER_THAN(">"), 			// sorted lexicographically
-	AND("-a"), OR("-o"), EQUAL("-eq"), NOT_EQUAL("-ne"), LESS_THAN("-lt"),
+	EQUAL("-eq"), NOT_EQUAL("-ne"), LESS_THAN("-lt"),
 	LESS_EQUAL("-le"), GREATER_THAN("-gt"), GREATER_EQUAL("-ge"),
 	// Grammar tokens
 	CONSTANT, NUMBER, STRING, LEFT_PAREN("("), RIGHT_PAREN(")"), EOF;
@@ -48,8 +48,8 @@ public enum Type {
 	
 	public boolean isBinary() {
 		switch (this) {
-			case STR_EQUAL: case STR_EQUAL_POSIX: case STR_NOT_EQUAL: case STR_LESS_THAN:
-			case STR_GREATER_THAN: case AND: case OR: case EQUAL: case NOT_EQUAL: 
+			case STR_EQUAL: case STR_EQUAL_POSIX: case STR_MATCH: case STR_NOT_EQUAL: 
+			case STR_LESS_THAN: case STR_GREATER_THAN: case EQUAL: case NOT_EQUAL: 
 			case LESS_THAN: case LESS_EQUAL: case GREATER_THAN: case GREATER_EQUAL:
 			case FILE_EQUAL: case NEWER_THAN: case OLDER_THAN:
 				return true;
