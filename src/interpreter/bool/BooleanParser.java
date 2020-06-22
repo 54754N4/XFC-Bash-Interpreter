@@ -11,7 +11,9 @@ import interpreter.generic.Token;
 
 /** >Notes
  * - Unary ops have higher precendence
- * - All unary ops have same precendence relative to each other (same with binary)
+ * - All ops have same precendence relative to other 
+ * ops with the same operand count
+ * - stacking/nesting unary ops doesn't make sense (in our case) 
  * 
  * >Grammar
  * expression: 	binary
