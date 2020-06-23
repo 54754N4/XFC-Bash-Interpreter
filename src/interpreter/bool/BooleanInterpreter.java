@@ -117,8 +117,8 @@ public class BooleanInterpreter implements Visitor {
 				return attr(file(left)).creationTime().to(TimeUnit.SECONDS) 
 						> attr(file(right)).creationTime().to(TimeUnit.SECONDS);
 			// args evaluated as arithmetic expressions
-			case EQUAL: return arithmetic(left, right, (l,r) -> l == r);
-			case NOT_EQUAL: return arithmetic(left, right, (l,r) -> l != r);
+			case EQUAL: return arithmetic(left, right, (l,r) -> l.equals(r));	// if you use == it wont work cause Double will be pointers
+			case NOT_EQUAL: return arithmetic(left, right, (l,r) -> !l.equals(r));
 			case LESS_THAN: return arithmetic(left, right, (l,r) -> l < r);
 			case LESS_EQUAL: return arithmetic(left, right, (l,r) -> l <= r);
 			case GREATER_THAN: return arithmetic(left, right, (l,r) -> l > r);
@@ -170,7 +170,9 @@ public class BooleanInterpreter implements Visitor {
 	private static boolean arithmetic(String left, String right, 
 			BiFunction<Double, Double, Boolean> consumer) throws InterpretingException {
 		try {
-			return consumer.apply(arithmetic(left).interpret(), arithmetic(right).interpret());
+			Double l = arithmetic(left).interpret(), 
+				r = arithmetic(right).interpret();
+			return consumer.apply(l, r);
 		} catch (ParsingException e) {
 			throw new InterpretingException(e.getLocalizedMessage());
 		}
