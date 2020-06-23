@@ -15,7 +15,7 @@ public class TestBooleanParser {
 		input0 = "-e filepath -eq (strin1 == \"some result\") > -S socket.file",
 		input1 = "-e filepath -eq (\"$file\" == $result) =~ -S socket.file",
 		real = "BashTokens.c =~ Bash.* && -e BashTokens.c",
-		math = "1+2+3+4 -gt 0";
+		math = "1+2+3+4 -eq 10";
 	
 	public static void testLexer() throws ParsingException {
 		BooleanLexer lexer = new BooleanLexer(input1);
