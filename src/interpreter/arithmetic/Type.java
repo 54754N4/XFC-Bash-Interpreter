@@ -21,7 +21,7 @@ public enum Type {
     ARC_COS("ACOS"), ARC_SIN("ASIN"), ARC_TAN("ATAN"), 
 	COS("COS"), SIN("SIN"), TAN("TAN");
 	
-	private String string;
+	private final String string;
 	
 	private Type(String string) {
 		this.string = string;
