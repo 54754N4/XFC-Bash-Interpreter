@@ -16,7 +16,7 @@ public enum Type {
 	IS_ZERO("-z"), IS_NON_ZERO("-n"), 											// for strings length
 	NOT("!"),
 	// Binary operators
-	AND("&&"), OR("||"),
+	AND("&&"), OR("||"), AND_NOT("&!"),
 	STR_EQUAL("=="), STR_EQUAL_POSIX("="), STR_MATCH("=~"), 
 	STR_NOT_EQUAL("!="), STR_LESS_THAN("<"), STR_GREATER_THAN(">"), 			// sorted lexicographically
 	EQUAL("-eq"), NOT_EQUAL("-ne"), LESS_THAN("-lt"),
@@ -52,7 +52,7 @@ public enum Type {
 			case STR_EQUAL: case STR_EQUAL_POSIX: case STR_MATCH: case STR_NOT_EQUAL: 
 			case STR_LESS_THAN: case STR_GREATER_THAN: case EQUAL: case NOT_EQUAL: 
 			case LESS_THAN: case LESS_EQUAL: case GREATER_THAN: case GREATER_EQUAL:
-			case FILE_EQUAL: case NEWER_THAN: case OLDER_THAN:
+			case FILE_EQUAL: case NEWER_THAN: case OLDER_THAN: case AND: case OR:
 				return true;
 			default: return false;
 		}
