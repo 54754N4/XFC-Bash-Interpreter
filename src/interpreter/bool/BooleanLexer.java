@@ -87,6 +87,9 @@ public class BooleanLexer extends Lexer<Type> {
 						if (is('&')) {
 							advance();
 							return new Token<>(Type.AND);
+						} else if (is('!')) {
+							advance();
+							return new Token<>(Type.AND_NOT);
 						}
 						return error("Unrecognised char");
 					case '|':
