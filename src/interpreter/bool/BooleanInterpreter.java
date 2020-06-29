@@ -91,10 +91,20 @@ public class BooleanInterpreter implements Visitor {
 
 	@Override
 	public boolean visit(BinaryOperator op) throws InterpretingException {
-		if (op.token.type == Type.AND) 
-			return visit(op.left) && visit(op.right);
-		else if (op.token.type == Type.OR) 
-			return visit(op.left) || visit(op.right);
+		boolean first;
+		if (op.token.type == Type.AND) {
+			if (!(first = visit(op.left)))	// short-circuit on false
+				return false;
+			return first && visit(op.right);
+		} else if (op.token.type == Type.OR) { 
+			if (first = visit(op.left))		// short-circuit on true
+				return true;
+			return first || visit(op.right);	
+		} else if (op.token.type == Type.AND_NOT) {
+			if (!(first = visit(op.left)))	// short-circuit on false
+				return false;
+			return first && !visit(op.right);
+		} 
 		// Otherwise everything else requires string constants initially
 		String left = Constant.class.cast(op.left).token.value, 
 			right = Constant.class.cast(op.right).token.value;
