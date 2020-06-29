@@ -25,13 +25,13 @@
 |    +---- Display error if null or unset             ${param:?value}
 +---- Arithmetic expansion                            $((expression))
 +---- Tilde expansion                                 ~[+|-|username]?
++---- Conditional commands                            [[expression]]
 ```
 #### Incomplete:
 ```
 +---- Pathname expansion                              
 +---- Command substitution                            $(expression)
 +---- Process substitution                            [<>](sequence) 
-+---- Conditional commands                            [[expression]]
 ```
 
 ## Terminal
