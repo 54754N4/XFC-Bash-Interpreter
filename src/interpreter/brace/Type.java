@@ -11,14 +11,14 @@ public enum Type {
     COMMA(","), RANGE(".."), MINUS("-"),
     EOF("EOF");
     
-    private String representation;
+    private final String value;
 	
-	private Type(String representation) {
-		this.representation = representation;
+	private Type(String value) {
+		this.value = value;
 	}
 	
 	@Override
 	public String toString() {
-		return representation;
+		return value;
 	}
 }
